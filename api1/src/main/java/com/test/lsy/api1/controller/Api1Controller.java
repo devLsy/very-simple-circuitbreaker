@@ -1,6 +1,7 @@
 
-package com.test.lsy.api1;
+package com.test.lsy.api1.controller;
 
+import com.test.lsy.api1.service.FallbackService;
 import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 public class Api1Controller {
 
     private final RestTemplate restTemplate;
+    private final FallbackService fallbackService;
 
     @GetMapping("/call-api2")
     @CircuitBreaker(name = "api2Circuit", fallbackMethod = "fallbackApi2")
@@ -25,11 +27,6 @@ public class Api1Controller {
     }
 
     public String fallbackApi2(Throwable t) {
-        if (t instanceof CallNotPermittedException) {
-            log.warn("⚠️ CircuitBreaker OPEN 상태: 호출 차단됨. fallback 진입.");
-        } else {
-            log.warn("❌ API 호출 중 예외 발생: {}, fallback 진입.", t.toString());
-        }
-        return "API2 서버가 응답하지 않아 fallback 처리됨";
+        return fallbackService.fallbackApi2(t);
     }
 }
