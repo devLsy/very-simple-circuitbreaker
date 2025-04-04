@@ -1,0 +1,41 @@
+server:
+  port: 8081
+
+resilience4j:
+  circuitbreaker:
+    circuit-breaker-aspect-order: 1
+    configs:
+      default:
+        slidingWindowType: COUNT_BASED
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        failureRateThreshold: 40
+        minimumNumberOfCalls: 7
+        waitDurationInOpenState: 10s
+        slowCallDurationThreshold: 3s
+        slowCallRateThreshold: 60
+        permittedNumberOfCallsInHalfOpenState: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        # 아래는 생략 가능 (예외 설정 없으면 기본으로 모두 처리)
+        # recordExceptions:
+        # ignoreExceptions:
+
+    instances:
+      api2Circuit:
+        baseConfig: default
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    io.github.resilience4j.circuitbreaker: DEBUG

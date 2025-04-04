@@ -1,0 +1,37 @@
+
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.4'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.test.lsy'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '21'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3'
+    // Resilience4j for Spring Boot 3 (CircuitBreaker 등)
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.1.0'
+    // AOP 필수 (@CircuitBreaker 동작 위해)
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    // (선택) Actuator: /actuator/health 에 Circuit 상태 표시 가능
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // Devtools (선택)
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
