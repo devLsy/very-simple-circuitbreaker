@@ -1,6 +1,7 @@
 
 package com.test.lsy.api1;
 
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,11 @@ public class Api1Controller {
     }
 
     public String fallbackApi2(Throwable t) {
-        log.warn("Fallback activated due to: {}", t.toString());
+        if (t instanceof CallNotPermittedException) {
+            log.warn("⚠️ CircuitBreaker OPEN 상태: 호출 차단됨. fallback 진입.");
+        } else {
+            log.warn("❌ API 호출 중 예외 발생: {}, fallback 진입.", t.toString());
+        }
         return "API2 서버가 응답하지 않아 fallback 처리됨";
     }
 }
