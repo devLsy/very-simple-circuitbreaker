@@ -16,8 +16,8 @@
 - 요청과 응답이 정상적으로 이루어짐
 
 ### 2. 문제 발생 후 임계치 초과 (`OPEN`)
-- 서킷브레이커 설정을 안하면 500에러 발생
-- `@CircuitBreaker(name = "api2Circuit", fallbackMethod = "fallbackApi2")`
+- 서킷브레이커 설정을 주석 처리하면 500에러 발생
+- `//@CircuitBreaker(name = "api2Circuit", fallbackMethod = "fallbackApi2")`
 - API 2번이 죽거나 장애가 발생하여 일정 횟수 이상 실패
 - `resilience4j` 설정에 따라 아래 조건 충족 시:
   - `slidingWindowSize`
