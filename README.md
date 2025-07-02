@@ -42,6 +42,45 @@
 ## 💡 참고 사항
 
 - `/actuator/health`, `/actuator/circuitbreakers` 등으로 상태 확인 가능
+- `{
+    "status": "UP",
+    "components": {
+        "circuitBreakers": {
+            "status": "UP",
+            "details": {
+                "api2Circuit": {
+                    "status": "UP",
+                    "details": {
+                        "failureRate": "-1.0%",
+                        "failureRateThreshold": "50.0%",
+                        "slowCallRate": "-1.0%",
+                        "slowCallRateThreshold": "60.0%",
+                        "bufferedCalls": 0,
+                        "slowCalls": 0,
+                        "slowFailedCalls": 0,
+                        "failedCalls": 0,
+                        "notPermittedCalls": 0,
+                        // 상태('OPEN', 'CLOSEED', 'HALF_OPEN')
+                        "state": "CLOSED"
+                    }
+                }
+            }
+        },
+        "diskSpace": {
+            "status": "UP",
+            "details": {
+                "total": 1903498883072,
+                "free": 1488832942080,
+                "threshold": 10485760,
+                "path": "D:\\01.dev\\02.IntelliJ_project\\git\\circuitbreaker\\.",
+                "exists": true
+            }
+        },
+        "ping": {
+            "status": "UP"
+        }
+    }
+}`
 - `HALF_OPEN` 상태에서는 **요청이 실제로 들어와야 상태가 바뀜**
 - `CLOSED` 상태에서도 실패 시 fallback 실행 가능  
   (`@CircuitBreaker` 어노테이션이 붙어 있을 경우)
