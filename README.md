@@ -25,6 +25,21 @@
   - `minimumNumberOfCalls`
 - 서킷 브레이커가 `OPEN` 상태로 전환됨
 - 이후 요청은 API 2번을 호출하지 않고 **즉시 fallback 메서드 실행**
+- `
+- @Service
+@Slf4j
+public class FallbackService {
+
+    public String fallbackApi2(Throwable t) {
+        if (t instanceof CallNotPermittedException) {
+            log.warn("⚠️ CircuitBreaker OPEN 상태: 호출 차단됨. fallback 진입.");
+        } else {
+            log.warn("❌ API 호출 중 예외 발생: {}, fallback 진입.", t.toString());
+        }
+        return "API2 서버가 응답하지 않아 fallback 처리됨";
+    }
+}
+- `
 
 ### 3. 일정 시간 경과 후 상태 변화 (`HALF_OPEN`)
 - `waitDurationInOpenState` 시간이 지나면
